@@ -1,3 +1,4 @@
+@import 'animate.css';
 html {
     box-sizing: border-box;
 }
@@ -17,7 +18,8 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -69,21 +71,33 @@ h1 {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    animation-name: flipIny;
+    animation-duration: 0.75s;
 }
 
 .deck .card.show {
     font-size: 33px;
+   
 }
 
 .deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
-}
-.deck .card .disabled{
-    pointer-events: none;
+     animation-name: rubberBand;
+     animation-duration: 0.75s;
+     backface-visibility: visible
 }
 
+.unMatched {
+    animation-name: unMatched;
+    animation-duration: 0.75s;
+    backface-visibility: visible !important;
+}
+
+.disabled {
+    pointer-events: none;
+}
 
 /*
  * Styles for the Score Panel
@@ -91,6 +105,7 @@ h1 {
 
 .score-panel {
     text-align: left;
+    margin-right:  25px;
     width: 345px;
     margin-bottom: 10px;
 }
@@ -99,18 +114,105 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin: 0 15px 0 0;
+    vertical-align: middle;
+}
+.timer {
+    display: inline-block;
+    width:130px;
+    font-size:0.8rem;
+    height:30px;
+    line-height:30px;
+    margin: 0 auto;
+    background-color:#484848;
+    color:#fff;
+     border-radius:50px;
+       margin:0 25px;
+    text-align:center;
+    vertical-align: middle
 }
 
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
 }
+
 .yellow {
-    color:yellow
+    color: yellow
 }
 
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.popUp {
+    width: 320px;
+    height: 220px;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    margin: auto;
+    padding: 25px 15px;
+    z-index: 6;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+
+.popUp h2 {display: block; width: 100%;text-align: center;
+    color: red; 
+
+    text-transform: uppercase
+}
+
+.popUp li {list-style: none; display: inline;}
+
+span.close {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+    font-weight: bold;
+    z-index: 5;
+    display: block;
+    border:1px solid #000;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    text-align: center;
+    line-height: 30px;
+    z-index:;
+}
+span.close:hover {cursor: pointer;}
+.hide {visibility: hidden !important;}
+
+
+@media screen and (max-width:450px) {
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .deck {
+        width: 90%;
+        min-height: auto !important;
+        height: 100%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 15px 15px;
+        margin: 0 auto 2em;
+    }
+    .deck .card {
+        width: 23%;
+        height: 10vh;
+        margin-bottom: 10px;
+    }
+    .score-panel {
+        width: 90%;
+        margin: 0 auto 25px;
+    }
+    .rights {
+        line-height: 1em;
+    }
 }

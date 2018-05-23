@@ -1,0 +1,68 @@
+/* appear when click card */
+@keyframes flipIny {
+    from {
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+    }
+    40% {
+        transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+        animation-timing-function: ease-in;
+    }
+    60% {
+        transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+        opacity: 1;
+    }
+    80% {
+        transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+    }
+    to {
+        transform: perspective(400px);
+    }
+}
+/* appear when two cards unmatched */
+@keyframes unMatched {
+    from {
+        transform: scale3d(1, 1, 1);
+        background: red;
+    }
+    50% {
+        transform: scale3d(1.2, 1.2, 1.2);
+        background: red;
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+        background: #2e3d49;
+    }
+}
+/* appear when cards matched  */
+@keyframes rubberBand {
+    from {
+        transform: scale3d(1, 1, 1);
+        background: #04efda;
+    }
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+        background: #04efda;
+    }
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+        background: #04efda;
+    }
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+        background: #04efda;
+    }
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+        background: #04efda;
+    }
+    75% {
+        transform: scale3d(1.05, 0.95, 1);
+        background: #04efda;
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+        background: #04efda;
+    }
+}

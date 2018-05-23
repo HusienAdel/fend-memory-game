@@ -25,38 +25,51 @@ const cardsContainer = document.querySelector(".deck");
 
 let openCards = [];
 let matchedCards = [];
+
+// timer variables
+let interval;
+let timer = document.getElementById("timer");
+timer.innerHTML = "0 mins : 0 sec";
+let popUp = document.querySelector(".popUp");
+let closeBt = document.querySelector(".close");
+
 shuffle(icons);
 // create the cards
 // init the game
 function init() {
-    for (let i = 0; i < icons.length; i++) {
-        const card = document.createElement("li");
-        card.classList.add("card");
-        card.innerHTML = `<i class="${icons[i]}"></i>`;
-        cardsContainer.appendChild(card);
-        
-        //shuffle
-        // card click event
-        click(card);
-    }
+  for (let i = 0; i < icons.length; i++) {
+    const card = document.createElement("li");
+    card.classList.add("card");
+    card.innerHTML = `<i class="${icons[i]}"></i>`;
+    cardsContainer.appendChild(card);
+
+    //shuffle
+    // card click event
+    click(card);
+  }
 }
 
-
-
 // function : click event
+let clickCount = 0;
 
 function click(card) {
   card.addEventListener("click", function() {
+    clickCount++;
+
+    if (clickCount === 1) {
+      startTimer();
+    }
+
     const currentCard = this;
     const previousCard = openCards[0];
 
     // we have open cards
     if (openCards.length === 1) {
-      card.classList.add("show", "open", 'disabled');
+      card.classList.add("show", "open", "disabled");
       openCards.push(currentCard);
       // we should compare two cards now
 
-   comapre(currentCard, previousCard);
+      comapre(currentCard, previousCard);
     } else {
       // we don't have any open cards
 
@@ -67,9 +80,11 @@ function click(card) {
 }
 
 function comapre(currentCard, previousCard) {
-
-
-  if (currentCard.innerHTML === previousCard.innerHTML) {
+  // CHECK INNER CONENT + NOT ADDING SAME ELEMENT MATCH
+  if (
+    currentCard.innerHTML ===
+    previousCard.innerHTML /*&& currentCard !=previousCard*/
+  ) {
     currentCard.classList.add("match");
     previousCard.classList.add("match");
     matchedCards.push(currentCard, previousCard);
@@ -77,92 +92,136 @@ function comapre(currentCard, previousCard) {
     openCards = [];
 
     //check is over
+
     isOver();
   } else {
     //wait 500 ms
 
-    setTimeout(function () {
-      currentCard.classList.remove("open", "show", 'disabled');
-      previousCard.classList.remove("open", "show", "disabled");
-    }, 500);
-    openCards = [];
+    setTimeout(function() {
+      currentCard.classList.add("unMatched");
+      previousCard.classList.add("unMatched");
 
+      currentCard.classList.remove("open", "show", "disabled");
+      previousCard.classList.remove("open", "show", "disabled");
+    }, 850);
+    openCards = [];
   }
 
-// add new move
-addMove();
+  // add new move
+  addMove();
 }
-
 
 
 function isOver() {
   if (matchedCards.length === icons.length) {
-    alert("game over you get " + moves + "moves"  );
+    clearInterval(interval);
+    let time = getTimer();
+    let rate = startContainer.innerHTML;
+
+    popUp.classList.remove("hide");
+    popUp.innerHTML = "<span class='close'>X</span>" + "<h2>game Over</h2>" + " you get " + moves + " moves  \n" + " in time " + time + "\n with raing " + rate;
+    
+    closePop();
+
   }
 }
 
 
 
-// moves counter
-let moves=0;
-const movesCotainer=document.querySelector('.moves');
 
-function addMove() {
-moves++;
-movesCotainer.innerHTML=moves;
-// set the rating
-rating();
+function closePop() {
+  setInterval(function() {
+        popUp.classList.add("hide");
+  },3000);
 
 }
 
+
+function getTimer() {
+  let timerContainer = document.getElementById("timer").innerHTML;
+  return timerContainer;
+}
+
+// moves counter
+let moves = 0;
+const movesCotainer = document.querySelector(".moves");
+
+function addMove() {
+  moves++;
+  movesCotainer.innerHTML = moves;
+  // set the rating
+
+  rating();
+}
+
+//star timer
+let seconds = 0,
+  minute = 0,
+  hour = 0;
+
+function startTimer() {
+  interval = setInterval(function() {
+    timer.innerHTML = minute + " mins " + " : " + seconds + " sec ";
+    seconds++;
+    if (seconds == 60) {
+      minute++;
+      second = 0;
+    }
+    if (minute == 60) {
+      hour++;
+      minute = 0;
+    }
+  }, 1000);
+} // end of timer
 
 // Rating Sys ***
 
-const startContainer = document.querySelector('.stars');
-
+const startContainer = document.querySelector(".stars");
 
 function rating() {
-
-  startContainer.classList.add("yellow");
-
-  if (moves < 6){
-    startContainer.innerHTML =`	<li><i class="fa fa-star"></i>`;
-
-  } else if (moves > 6 && moves <12) {
-    startContainer.innerHTML = `	<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>`;
+  if (moves  > 0 && moves <12) {
+    startContainer.innerHTML = `	<li><i class="fa fa-star"></i>
+    <li><i class="fa fa-star-o"></i>
+    <li><i class="fa fa-star-o"></i>
     
-  } else if (moves > 12 && moves < 18) {
-    startContainer.innerHTML = `<li><i class="fa fa-star"></i></li>
+    
+    `;
+  } else if (moves > 12 && moves < 24 ) {
+    startContainer.innerHTML = `
+    <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star-o"></i></li>
+            `;
+  } else if (moves > 24 && moves < 35 ) {
+           startContainer.innerHTML = `<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li></li>
         		<li><i class="fa fa-star"></i></li>`;
-
-  } 
-
+         }
 }
 
-
-
 //restart button
-const restartBt=document.querySelector('.restart');+
-restartBt.addEventListener('click', function() {
+const restartBt = document.querySelector(".restart");
++restartBt.addEventListener("click", function() {
+  clickCount = 0;
+  clearInterval(interval);
+  (seconds = 0), (minute = 0), (hour = 0);
+  timer.innerHTML = "0 mins : 0 sec";
 
   // delete all cards
-  cardsContainer.innerHTML="";
-
+  cardsContainer.innerHTML = "";
   // call init to create new cards
   init();
 
   // reset any related var
-matchedCards=[];
-moves=0;
-movesCotainer.innerHTML=moves;
 
+  matchedCards = [];
+  moves = 0;
+  movesCotainer.innerHTML = moves;
+  shuffle(icons);
 });
 
 // start the game
 init();
-
 
 /*
  * Display the cards on the page
