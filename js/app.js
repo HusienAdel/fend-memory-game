@@ -30,26 +30,25 @@ let matchedCards = [];
 let interval;
 let timer = document.getElementById("timer");
 timer.innerHTML = "0 mins : 0 sec";
+
+// popp message that show time, rating, cout of moves
 let popUp = document.querySelector(".popUp");
 let closeBt = document.querySelector(".close");
-
+// shuffle deck li
 shuffle(icons);
-// create the cards
-// init the game
+//  create the cards / init the game
 function init() {
   for (let i = 0; i < icons.length; i++) {
     const card = document.createElement("li");
     card.classList.add("card");
     card.innerHTML = `<i class="${icons[i]}"></i>`;
     cardsContainer.appendChild(card);
-
-    //shuffle
     // card click event
     click(card);
   }
 }
 
-// function : click event
+// function : click listener for card
 let clickCount = 0;
 
 function click(card) {
@@ -74,29 +73,26 @@ function click(card) {
       // we don't have any open cards
 
       card.classList.add("show", "open", "disabled");
+      // added to opencard array
       openCards.push(this);
     }
   });
 }
-
+// compare
 function comapre(currentCard, previousCard) {
   // CHECK INNER CONENT + NOT ADDING SAME ELEMENT MATCH
-  if (
-    currentCard.innerHTML ===
-    previousCard.innerHTML /*&& currentCard !=previousCard*/
-  ) {
+  if (currentCard.innerHTML === previousCard.innerHTML) {
     currentCard.classList.add("match");
     previousCard.classList.add("match");
     matchedCards.push(currentCard, previousCard);
-
+    // reset opencard
     openCards = [];
 
     //check is over
-
+    // call function for game over and dusplay result
     isOver();
   } else {
-    //wait 500 ms
-
+    // play funection with time : 850ms
     setTimeout(function() {
       currentCard.classList.add("unMatched");
       previousCard.classList.add("unMatched");
@@ -111,7 +107,7 @@ function comapre(currentCard, previousCard) {
   addMove();
 }
 
-
+// check game over and display result
 function isOver() {
   if (matchedCards.length === icons.length) {
     clearInterval(interval);
@@ -119,24 +115,29 @@ function isOver() {
     let rate = startContainer.innerHTML;
 
     popUp.classList.remove("hide");
-    popUp.innerHTML = "<span class='close'>X</span>" + "<h2>game Over</h2>" + " you get " + moves + " moves  \n" + " in time " + time + "\n with raing " + rate;
-    
+    popUp.innerHTML =
+      "<span class='close'>X</span>" +
+      "<h2>game Over</h2>" +
+      " you get " +
+      moves +
+      " moves  \n" +
+      " in time " +
+      time +
+      "\n with raing " +
+      rate;
+    // popup show
     closePop();
-
   }
 }
 
-
-
-
+// poppup show and close after 3 seconds
 function closePop() {
   setInterval(function() {
-        popUp.classList.add("hide");
-  },3000);
-
+    popUp.classList.add("hide");
+  }, 3000);
 }
 
-
+// display timer
 function getTimer() {
   let timerContainer = document.getElementById("timer").innerHTML;
   return timerContainer;
@@ -146,6 +147,7 @@ function getTimer() {
 let moves = 0;
 const movesCotainer = document.querySelector(".moves");
 
+// moves counter
 function addMove() {
   moves++;
   movesCotainer.innerHTML = moves;
@@ -154,7 +156,7 @@ function addMove() {
   rating();
 }
 
-//star timer
+// star timer
 let seconds = 0,
   minute = 0,
   hour = 0;
@@ -179,24 +181,24 @@ function startTimer() {
 const startContainer = document.querySelector(".stars");
 
 function rating() {
-  if (moves  > 0 && moves <12) {
+  if (moves > 0 && moves < 12) {
     startContainer.innerHTML = `	<li><i class="fa fa-star"></i>
     <li><i class="fa fa-star-o"></i>
     <li><i class="fa fa-star-o"></i>
     
     
     `;
-  } else if (moves > 12 && moves < 24 ) {
+  } else if (moves > 12 && moves < 24) {
     startContainer.innerHTML = `
     <li><i class="fa fa-star"></i></li>
             <li><i class="fa fa-star"></i></li>
             <li><i class="fa fa-star-o"></i></li>
             `;
-  } else if (moves > 24 && moves < 35 ) {
-           startContainer.innerHTML = `<li><i class="fa fa-star"></i></li>
+  } else if (moves > 24 && moves < 35) {
+    startContainer.innerHTML = `<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li></li>
         		<li><i class="fa fa-star"></i></li>`;
-         }
+  }
 }
 
 //restart button
