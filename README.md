@@ -12,5 +12,7 @@ To get started, open `js/app.js` and start building out the app's functionality
 
 For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
 
-##thanks
+## ♥ thanks
 thanks for all help me to start my dream again to learn JavaScript Again
+
+
